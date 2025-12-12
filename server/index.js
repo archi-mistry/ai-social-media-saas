@@ -2,15 +2,28 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+const connectDB = require("./config/db");
+const authRoutes = require("./routes/authRoutes");
+
 const app = express();
 
-app.use(cors());
-app.use(express.json()); // THIS is required for auth
+// 🔹 Connect to MongoDB
+connectDB();
 
+// 🔹 Middlewares
+app.use(cors());
+app.use(express.json());
+
+// 🔹 Test route
 app.get("/ping", (req, res) => {
   res.send("pong");
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on http://localhost:${process.env.PORT}`);
+// 🔹 Auth routes
+app.use("/api/auth", authRoutes);
+
+// 🔹 Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
