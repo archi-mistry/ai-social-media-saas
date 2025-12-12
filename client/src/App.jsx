@@ -1,19 +1,17 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
-  const [msg, setMsg] = useState("Loading...");
-
-  useEffect(() => {
-    axios.get("http://localhost:5000/ping")
-      .then(res => setMsg(res.data))
-      .catch(() => setMsg("Backend not connected"));
-  }, []);
-
   return (
-    <div style={{ padding: "40px", fontSize: "24px" }}>
-      Backend says: {msg}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
