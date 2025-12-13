@@ -1,68 +1,561 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+/* ===============================
+   GLOBAL RESET & BASE
+================================ */
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  background: #f6f7fb;
+  color: #1f2937;
+  line-height: 1.6;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* ===============================
+   BRAND VARIABLES (INSTAGRAM INSPIRED)
+================================ */
+
+:root {
+  --ig-pink: #f58529;
+  --ig-purple: #dd2a7b;
+  --ig-violet: #8134af;
+  --ig-blue: #515bd4;
+
+  --ig-gradient: linear-gradient(
+    135deg,
+    #f58529,
+    #dd2a7b,
+    #8134af,
+    #515bd4
+  );
+}
+
+/* ===============================
+   NAVBAR
+================================ */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #e5e7eb;
+  z-index: 100;
+}
+
+.nav-container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 800;
+  background: var(--ig-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-right {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.nav-right a {
+  font-size: 14px;
+  font-weight: 500;
+  position: relative;
+}
+
+.nav-right a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: var(--ig-gradient);
+  transition: width 0.25s ease;
+}
+
+.nav-right a:hover::after {
+  width: 100%;
+}
+
+.btn-outline {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    var(--ig-gradient) border-box;
+  font-size: 14px;
+}
+
+/* ===============================
+   AUTH PAGE (LOGIN / REGISTER)
+================================ */
+
+.auth-page {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* soft Instagram glow */
+.auth-page::before {
+  content: "";
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(
+    circle,
+    rgba(221,42,123,0.25),
+    transparent 70%
+  );
+  filter: blur(70px);
+  z-index: 0;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+  background: white;
+  padding: 38px;
+  border-radius: 18px;
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.08),
+    0 4px 10px rgba(0,0,0,0.05);
+  z-index: 1;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.auth-card:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 20px 45px rgba(0,0,0,0.12),
+    0 6px 14px rgba(0,0,0,0.08);
+}
+
+.auth-card h2 {
+  text-align: center;
+  margin-bottom: 26px;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+/* ===============================
+   FORM ELEMENTS
+================================ */
+
+.auth-card input {
+  width: 100%;
+  padding: 13px 14px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-card input:focus {
+  outline: none;
+  border-color: #dd2a7b;
+  box-shadow: 0 0 0 3px rgba(221,42,123,0.18);
+}
+
+.auth-card button {
+  width: 100%;
+  padding: 13px;
+  background: var(--ig-gradient);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.auth-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(221,42,123,0.45);
+}
+
+.auth-card button:active {
+  transform: translateY(0);
+}
+
+.auth-card p {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #dc2626;
+  text-align: center;
+}
+
+/* ===============================
+   DASHBOARD
+================================ */
+
+.dashboard {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.dashboard-header h2 {
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.stats-grid {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  background: white;
+  padding: 22px;
+  border-radius: 18px;
+  box-shadow:
+    0 8px 22px rgba(0,0,0,0.06),
+    0 3px 8px rgba(0,0,0,0.04);
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+}
+
+.stat-title {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 800;
+  margin-top: 6px;
+}
+
+/* main CTA card */
+
+.main-card {
+  margin-top: 35px;
+  background: var(--ig-gradient);
+  color: white;
+  border-radius: 24px;
+  padding: 36px;
+  box-shadow: 0 22px 50px rgba(221,42,123,0.45);
+}
+
+.main-card h3 {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.main-card p {
+  margin-top: 10px;
+  font-size: 14px;
+  opacity: 0.95;
+}
+
+.main-card button {
+  margin-top: 22px;
+  background: white;
+  color: #dd2a7b;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 14px;
+  font-weight: 700;
+}
+.btn-logout {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #ff5f6d, #ffc371);
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 700;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-logout:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(255,95,109,0.45);
+}
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 12px 30px rgba(221,42,123,0.25),
+    0 4px 10px rgba(0,0,0,0.05);
+}
+.main-card button {
+  margin-top: 22px;
+  background: white;
+  color: #dd2a7b;
+  border: none;
+  padding: 14px 26px;
+  border-radius: 16px;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.main-card button:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 14px 30px rgba(255,255,255,0.45);
+}
+
+
+/* ===============================
+   CREATE CONTENT PAGE
+================================ */
+
+.create-page {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.create-header h2 {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.create-header p {
+  color: #6b7280;
+  margin-top: 6px;
+}
+
+.create-grid {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 30px;
+}
+
+.create-input {
+  background: white;
+  padding: 26px;
+  border-radius: 20px;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.06),
+    0 3px 8px rgba(0,0,0,0.04);
+}
+
+.create-input label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.create-input textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  margin-bottom: 20px;
+  resize: none;
+  font-size: 14px;
+}
+
+.platforms {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.platforms button {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: white;
+  font-weight: 600;
+}
+
+.platforms button.active {
+  background: var(--ig-gradient);
+  color: white;
+  border: none;
+}
+
+.generate-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: var(--ig-gradient);
+  color: white;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+/* Preview */
+
+.preview-card {
+  background: white;
+  padding: 26px;
+  border-radius: 20px;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.06),
+    0 3px 8px rgba(0,0,0,0.04);
+}
+
+.preview-label {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+.preview-box {
+  min-height: 200px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f9fafb;
+  font-size: 14px;
+  line-height: 1.6;
+}
+/* ===============================
+   PROMPT TEMPLATES
+================================ */
+
+.templates-section {
+  margin-top: 30px;
+}
+
+.template-group {
+  margin-bottom: 24px;
+}
+
+.template-group h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #374151;
+}
+
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.template-card {
+  background: white;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+  text-align: left;
+  line-height: 1.5;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.template-card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 12px 28px rgba(221,42,123,0.25),
+    0 4px 10px rgba(0,0,0,0.05);
+}
+/* Style selector */
+
+.styles {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.styles button {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: white;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.styles button.active {
+  background: var(--ig-gradient);
+  color: white;
+  border: none;
+}
+
+/* Thinking state */
+
+.thinking {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.8;
+}
+
+/* Copy button */
+
+.copy-btn {
+  margin-top: 20px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: none;
+  background: var(--ig-gradient);
+  color: white;
+  font-weight: 800;
+}
+/* Quick suggestions */
+
+.quick-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.suggestion-pill {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.suggestion-pill:hover {
+  background: var(--ig-gradient);
+  color: white;
+  border: none;
 }
