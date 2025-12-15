@@ -14,12 +14,16 @@ export default function CreateContent() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [variationIndex, setVariationIndex] = useState(0);
+  const [history, setHistory] = useState([]);
 
+  // Reset variations when style changes
   useEffect(() => {
     setVariationIndex(0);
   }, [style]);
 
   const mockGenerate = () => {
+    if (!prompt.trim()) return;
+
     setLoading(true);
     setResult(null);
 
@@ -73,8 +77,22 @@ export default function CreateContent() {
       const index = variationIndex % options.length;
 
       if (options.length > 0) {
-        setResult(options[index]);
+        const generated = options[index];
+
+        setResult(generated);
         setVariationIndex((prev) => prev + 1);
+
+        // ✅ Auto-save to history
+        setHistory((prev) => [
+          {
+            id: Date.now(),
+            prompt,
+            style,
+            platform,
+            output: generated,
+          },
+          ...prev,
+        ]);
       }
 
       setLoading(false);
@@ -85,12 +103,13 @@ export default function CreateContent() {
     <div className="create-page">
       <div className="create-header">
         <h2>Create Content</h2>
-        <p>Choose a template or write your own idea</p>
+        <p>Turn ideas into scroll-stopping posts</p>
       </div>
 
       <div className="create-grid">
         {/* LEFT */}
         <div className="create-input">
+          {/* Quick suggestions */}
           <div className="quick-suggestions">
             {quickSuggestions.map((text, i) => (
               <button
@@ -105,6 +124,7 @@ export default function CreateContent() {
 
           <label>Your prompt</label>
           <textarea
+            placeholder="Choose a suggestion or write your own idea..."
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
           />
@@ -140,7 +160,7 @@ export default function CreateContent() {
             disabled={loading}
             onClick={mockGenerate}
           >
-            {loading ? "Generating..." : "Generate Content"}
+            {loading ? "Generating…" : "Generate Content"}
           </button>
         </div>
 
@@ -187,7 +207,26 @@ export default function CreateContent() {
                   Regenerate
                 </button>
               </>
+              
             )}
+{history.length > 0 && (
+  <div className="history-section">
+    <h4>History</h4>
+
+    <div className="history-list">
+      {history.map((item) => (
+        <button
+          key={item.id}
+          className="history-item"
+          onClick={() => setResult(item.output)}
+        >
+          <span>{item.prompt.slice(0, 40)}...</span>
+          <small>{item.style}</small>
+        </button>
+      ))}
+    </div>
+  </div>
+)}
 
             {!loading && !result && (
               <p>Your generated content will appear here...</p>

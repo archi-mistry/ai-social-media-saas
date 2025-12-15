@@ -559,3 +559,57 @@ button {
   color: white;
   border: none;
 }
+/* ===============================
+   HISTORY PANEL
+================================ */
+
+.history-section {
+  margin-top: 24px;
+}
+
+.history-section h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #374151;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.history-item {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-align: left;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.history-item span {
+  display: block;
+  font-weight: 600;
+  color: #111827;
+}
+
+.history-item small {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.history-item:hover {
+  background: var(--ig-gradient);
+  color: white;
+}
+
+.history-item:hover span,
+.history-item:hover small {
+  color: white;
+}
