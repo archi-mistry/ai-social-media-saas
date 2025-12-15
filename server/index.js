@@ -5,6 +5,7 @@ require("dotenv").config();
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
+const historyRoutes = require("./routes/historyRoutes");
 
 const app = express();
 
@@ -23,7 +24,7 @@ app.get("/ping", (req, res) => {
 // 🔹 Auth routes
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
-
+app.use("/api/history", historyRoutes);
 
 // 🔹 Start server
 const PORT = process.env.PORT || 5000;

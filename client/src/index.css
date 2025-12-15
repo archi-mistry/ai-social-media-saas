@@ -613,3 +613,28 @@ button {
 .history-item:hover small {
   color: white;
 }
+/* Active history highlight */
+.active-history {
+  background: var(--ig-gradient);
+  color: white;
+  border: none;
+}
+
+.active-history span,
+.active-history small {
+  color: white;
+}
+
+/* Clear history button */
+.clear-history {
+  margin-top: 10px;
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.clear-history:hover {
+  text-decoration: underline;
+}

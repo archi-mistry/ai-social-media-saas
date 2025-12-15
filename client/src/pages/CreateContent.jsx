@@ -15,6 +15,7 @@ export default function CreateContent() {
   const [result, setResult] = useState(null);
   const [variationIndex, setVariationIndex] = useState(0);
   const [history, setHistory] = useState([]);
+  const [activeHistoryId, setActiveHistoryId] = useState(null);
 
   // Reset variations when style changes
   useEffect(() => {
@@ -78,25 +79,27 @@ export default function CreateContent() {
 
       if (options.length > 0) {
         const generated = options[index];
+        const id = Date.now();
 
         setResult(generated);
         setVariationIndex((prev) => prev + 1);
+        setActiveHistoryId(id);
 
-        // ✅ Auto-save to history
+        // Save to history (limit 10)
         setHistory((prev) => [
           {
-            id: Date.now(),
+            id,
             prompt,
             style,
             platform,
             output: generated,
           },
-          ...prev,
+          ...prev.slice(0, 9),
         ]);
       }
 
       setLoading(false);
-    }, 1500);
+    }, 1200);
   };
 
   return (
@@ -107,9 +110,8 @@ export default function CreateContent() {
       </div>
 
       <div className="create-grid">
-        {/* LEFT */}
+        {/* LEFT SIDE */}
         <div className="create-input">
-          {/* Quick suggestions */}
           <div className="quick-suggestions">
             {quickSuggestions.map((text, i) => (
               <button
@@ -124,7 +126,7 @@ export default function CreateContent() {
 
           <label>Your prompt</label>
           <textarea
-            placeholder="Choose a suggestion or write your own idea..."
+            placeholder="Choose a suggestion or write your own idea…"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
           />
@@ -164,7 +166,7 @@ export default function CreateContent() {
           </button>
         </div>
 
-        {/* RIGHT */}
+        {/* RIGHT SIDE */}
         <div className="preview-card">
           <p className="preview-label">Preview</p>
 
@@ -207,31 +209,48 @@ export default function CreateContent() {
                   Regenerate
                 </button>
               </>
-              
             )}
-{history.length > 0 && (
-  <div className="history-section">
-    <h4>History</h4>
-
-    <div className="history-list">
-      {history.map((item) => (
-        <button
-          key={item.id}
-          className="history-item"
-          onClick={() => setResult(item.output)}
-        >
-          <span>{item.prompt.slice(0, 40)}...</span>
-          <small>{item.style}</small>
-        </button>
-      ))}
-    </div>
-  </div>
-)}
 
             {!loading && !result && (
-              <p>Your generated content will appear here...</p>
+              <p>Your generated content will appear here…</p>
             )}
           </div>
+
+          {/* HISTORY PANEL */}
+          {history.length > 0 && (
+            <div className="history-section">
+              <h4>History</h4>
+
+              <div className="history-list">
+                {history.map((item) => (
+                  <button
+                    key={item.id}
+                    className={`history-item ${
+                      activeHistoryId === item.id ? "active-history" : ""
+                    }`}
+                    onClick={() => {
+                      setResult(item.output);
+                      setActiveHistoryId(item.id);
+                    }}
+                  >
+                    <span>{item.prompt.slice(0, 40)}...</span>
+                    <small>{item.style}</small>
+                  </button>
+                ))}
+              </div>
+
+              <button
+                className="clear-history"
+                onClick={() => {
+                  setHistory([]);
+                  setResult(null);
+                  setActiveHistoryId(null);
+                }}
+              >
+                Clear history
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
