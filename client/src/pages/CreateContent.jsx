@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 const quickSuggestions = [
   "5 hook lines for my skincare products reel",
   "Instagram caption with strong CTA for beauty brand",
@@ -7,12 +8,16 @@ const quickSuggestions = [
 ];
 
 export default function CreateContent() {
-  // ✅ ALL HOOKS LIVE INSIDE THE COMPONENT
   const [prompt, setPrompt] = useState("");
   const [platform, setPlatform] = useState("instagram");
   const [style, setStyle] = useState("bold");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [variationIndex, setVariationIndex] = useState(0);
+
+  useEffect(() => {
+    setVariationIndex(0);
+  }, [style]);
 
   const mockGenerate = () => {
     setLoading(true);
@@ -20,58 +25,86 @@ export default function CreateContent() {
 
     setTimeout(() => {
       const outputs = {
-        bold: {
-          hook: "Stop scrolling — this changes everything.",
-          value:
-            "This content is designed to grab attention instantly and keep your audience engaged without overthinking.",
-          cta: "Save this post if you want better reach 🚀",
-        },
-        casual: {
-          hook: "Okay but hear me out 👀",
-          value:
-            "Sometimes the best content is the one that feels real, simple, and human. This does exactly that.",
-          cta: "Let me know what you think 💬",
-        },
-        luxury: {
-          hook: "Refined. Intentional. Powerful.",
-          value:
-            "Crafted with precision, this content speaks to audiences who value quality, clarity, and elegance.",
-          cta: "Experience content that feels premium ✨",
-        },
+        bold: [
+          {
+            hook: "Stop scrolling — this changes everything.",
+            value:
+              "This content is designed to grab attention instantly and keep your audience engaged without overthinking.",
+            cta: "Save this post if you want better reach 🚀",
+          },
+          {
+            hook: "Your audience is waiting for THIS.",
+            value:
+              "If you want content that converts, clarity beats trends every time.",
+            cta: "Follow for more content tips 🔥",
+          },
+        ],
+        casual: [
+          {
+            hook: "Okay but hear me out 👀",
+            value:
+              "Sometimes the best content is the one that feels real, simple, and human.",
+            cta: "What do you think? 💬",
+          },
+          {
+            hook: "Not gonna lie… this works.",
+            value:
+              "You don’t need viral tricks when your message connects.",
+            cta: "Drop a ❤️ if you agree",
+          },
+        ],
+        luxury: [
+          {
+            hook: "Refined. Intentional. Powerful.",
+            value:
+              "Crafted with precision for audiences who value elegance.",
+            cta: "Experience premium content ✨",
+          },
+          {
+            hook: "Luxury is in the details.",
+            value:
+              "Every word here is designed to elevate brand perception.",
+            cta: "Discover the difference 🤍",
+          },
+        ],
       };
 
-      setResult(outputs[style]);
+      const options = outputs[style] || [];
+      const index = variationIndex % options.length;
+
+      if (options.length > 0) {
+        setResult(options[index]);
+        setVariationIndex((prev) => prev + 1);
+      }
+
       setLoading(false);
     }, 1500);
   };
 
   return (
     <div className="create-page">
-      {/* Header */}
       <div className="create-header">
         <h2>Create Content</h2>
         <p>Choose a template or write your own idea</p>
       </div>
-{/* Quick suggestions */}
-<div className="quick-suggestions">
-  {quickSuggestions.map((text, index) => (
-    <button
-      key={index}
-      onClick={() => setPrompt(text)}
-      className="suggestion-pill"
-    >
-      {text}
-    </button>
-  ))}
-</div>
 
-      {/* Input + Preview */}
       <div className="create-grid">
         {/* LEFT */}
         <div className="create-input">
+          <div className="quick-suggestions">
+            {quickSuggestions.map((text, i) => (
+              <button
+                key={i}
+                className="suggestion-pill"
+                onClick={() => setPrompt(text)}
+              >
+                {text}
+              </button>
+            ))}
+          </div>
+
           <label>Your prompt</label>
           <textarea
-            placeholder="Choose a template or write your own idea..."
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
           />
@@ -107,7 +140,7 @@ export default function CreateContent() {
             disabled={loading}
             onClick={mockGenerate}
           >
-            {loading ? "Generating…" : "Generate Content"}
+            {loading ? "Generating..." : "Generate Content"}
           </button>
         </div>
 
@@ -144,6 +177,14 @@ export default function CreateContent() {
                   }
                 >
                   Copy Content
+                </button>
+
+                <button
+                  className="copy-btn"
+                  style={{ marginLeft: "10px", background: "#111" }}
+                  onClick={mockGenerate}
+                >
+                  Regenerate
                 </button>
               </>
             )}
