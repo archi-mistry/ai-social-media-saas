@@ -1,4 +1,27 @@
 import { useState, useEffect } from "react";
+useEffect(() => {
+  const fetchHistory = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await fetch("http://localhost:5000/api/history", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setHistory(data);
+      }
+    } catch (err) {
+      console.error("FRONTEND FETCH HISTORY ERROR:", err);
+    }
+  };
+
+  fetchHistory();
+}, []);
 
 const quickSuggestions = [
   "5 hook lines for my skincare products reel",

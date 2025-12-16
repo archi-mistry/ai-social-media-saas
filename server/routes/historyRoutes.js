@@ -29,5 +29,18 @@ router.post("/", protect, async (req, res) => {
     res.status(500).json({ message: "Failed to save history" });
   }
 });
+// Get logged-in user's history
+router.get("/", protect, async (req, res) => {
+  try {
+    const history = await History.find({ user: req.user._id })
+      .sort({ createdAt: -1 })
+      .limit(10);
+
+    res.json(history);
+  } catch (error) {
+    console.error("FETCH HISTORY ERROR:", error);
+    res.status(500).json({ message: "Failed to fetch history" });
+  }
+});
 
 module.exports = router;
